@@ -52,6 +52,7 @@ static int send_request(struct socket *sock, unsigned char *buf, size_t size)
     length = kernel_sendmsg(sock, &msg, &vec, 1, strlen(buf) - 1);
 
     printk(MODULE_NAME ": send request = %s\n", buf);
+    memset(buf, 0, BUF_SIZE);
 
     return length;
 }
@@ -71,6 +72,7 @@ static int echo_server_worker(void *arg)
         printk(KERN_ERR MODULE_NAME ": kmalloc error....\n");
         return -1;
     }
+    memset(buf, 0, BUF_SIZE);
 
     while (!kthread_should_stop()) {
         res = get_request(sock, buf, BUF_SIZE - 1);
