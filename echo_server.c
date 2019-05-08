@@ -88,6 +88,13 @@ static int echo_server_worker(void *arg)
             printk(KERN_ERR MODULE_NAME ": send request error = %d\n", res);
             break;
         }
+
+        strncpy(buf, "\n\n", 3);
+        res = send_request(sock, buf, strlen(buf));
+        if (res < 0) {
+            printk(KERN_ERR MODULE_NAME ": send request error = %d\n", res);
+            break;
+        }
     }
 
     res = get_request(sock, buf, BUF_SIZE - 1);
